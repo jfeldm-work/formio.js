@@ -350,7 +350,7 @@ export default class ButtonComponent extends Field {
           components
         });
 
-        this.triggerChange();
+        // this.triggerChange();
         break;
       }
       case 'url':

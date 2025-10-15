@@ -4,6 +4,7 @@ import Field from '../field/Field';
 import Components from '../../Components';''
 import FormioUtils from '../../../utils';
 import { process as processAsync, processSync } from '@formio/core/process';
+import {Tree} from "../../../utils/tree";
 
 /**
  * NestedComponent class.
@@ -408,6 +409,15 @@ export default class NestedComponent extends Field {
    createComponent(component, options, data, before, replacedComp) {
     if (!component) {
       return;
+    }
+    if (component.type === 'form') {
+      let nestedFormTree = Formio.nestedFormTree;
+      if (!nestedFormTree) {
+        nestedFormTree = new Tree(this.id, this.id);
+      } else if (this.parentId) {
+        nestedFormTree.insert(this.parentId, this.id, this.id);
+      }
+      Formio.nestedFormTree = nestedFormTree;
     }
     options = options || this.options;
     data = data || this.data;

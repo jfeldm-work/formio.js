@@ -360,6 +360,13 @@ export default class Component extends Element {
     this.parent = this.options.parent;
 
     /**
+     * Points to the parent component id.
+     *
+     * @type {string}
+     */
+    this.parentId = this.options.parentId;
+
+    /**
      * The component paths for this component.
      * @type {import('@formio/core').ComponentPaths} - The component paths.
      */

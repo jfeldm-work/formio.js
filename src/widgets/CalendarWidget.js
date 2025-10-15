@@ -446,10 +446,6 @@ export default class CalendarWidget extends InputWidget {
 
     const excludedFromMaskFormats = ['MMMM'];
 
-    if (!this.settings.readOnly && !_.some(excludedFromMaskFormats, format => _.includes(this.settings.format, format))) {
-      // Enforce the input mask of the format.
-      this.setInputMask(this.calendar._input, convertFormatToMask(this.settings.format));
-    }
 
     // Fixes an issue with IE11 where value is set only after the second click
     // TODO: Remove when the issue is solved in the flatpickr library

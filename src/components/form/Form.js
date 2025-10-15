@@ -6,6 +6,7 @@ import EventEmitter from 'eventemitter3';
 import {isMongoId, eachComponent, componentValueTypes} from '../../utils';
 import { Formio } from '../../Formio';
 import Form from '../../Form';
+import detectNestedFormLoop from "./util/LoopDetection";
 
 export default class FormComponent extends Component {
   static schema(...extend) {
@@ -173,6 +174,8 @@ export default class FormComponent extends Component {
 
     // Set the parent option to the subform so those references are stable when the subform is created
     options.parent = this;
+    //Transmit the FormComponent as parent ref to the new Form via the options
+    options.parentId = this.id;
 
     if (!this.options) {
       return options;
@@ -539,6 +542,12 @@ export default class FormComponent extends Component {
     }
     else if (this.formSrc) {
       this.subFormLoading = true;
+       try {
+        detectNestedFormLoop(this.parent.id, this.id, this.component.form.id)
+      } catch (e) {
+        console.error(e);
+        return NativePromise.reject();
+      }
       const options = this.root?.formio?.base && this.root?.formio?.projectUrl
         ? {
             base: this.root.formio.base,
